@@ -49,7 +49,10 @@ export async function signIn(req, res) {
                 const objectLogin ={
                     token                    
                 }
-    
+                // const login = await db.query(`SELECT * FROM tokens;`) 
+                const postToken = await db.query(`
+                INSERT INTO tokens (token,"userId") 
+                VALUES ($1, $2);`, [token, user.rows[0].id])
                 return res.status(200).send(objectLogin);
             }
             else{
@@ -57,7 +60,7 @@ export async function signIn(req, res) {
             }          
                    
         }
-        res.status(201).send("Created")
+
     } catch (err) {
         res.status(500).send(err.message)
     }
