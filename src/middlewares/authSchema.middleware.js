@@ -6,9 +6,6 @@ export async function authToken(req, res, next) {
     if (!token) return res.status(401).send("token!")
 
     try {
-        const session = await db.collection("sessions").findOne({token: token})
-        if (!session) return res.status(401).send(token)
-
         res.locals.session = session
 
         next()
