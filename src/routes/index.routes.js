@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { getUsers, signup } from "../controllers/login.controller.js";
+import { getUsers, signIn, signUp } from "../controllers/auth.controller.js";
 import { validateSchema } from "../middlewares/validateSchema.middleware.js";
-import { signUpObject } from "../schemas/validate.schema.js";
+import { signInObject, signUpObject } from "../schemas/validate.schema.js";
 
 const router = Router()
 // router.use(gamesRouter)
 
 router.get("/users", getUsers)
-router.post("/signup",validateSchema(signUpObject), signup)
+router.post("/signup",validateSchema(signUpObject), signUp)
+router.post("/signin",validateSchema(signInObject), signIn)
 export default router
