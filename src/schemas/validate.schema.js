@@ -13,5 +13,5 @@ export const signInObject = joi.object({
   })
 
 export const urlObject = joi.object({
-    url: joi.string().required()
+    url: joi.string().uri().required()
   })
