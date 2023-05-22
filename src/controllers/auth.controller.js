@@ -18,7 +18,7 @@ export async function signUp(req, res) {
         const user = await db.query(`SELECT * FROM users WHERE email = $1;`,[email])
 
         if(user.rows[0]){
-            res.status(409).send("Email já cadastrado")
+            return res.status(409).send("Email já cadastrado")
         }
         else{
             if(password===confirmPassword){
@@ -26,7 +26,7 @@ export async function signUp(req, res) {
                 INSERT INTO users (name,email,password) 
                 VALUES ($1, $2, $3);`, [name,email,password])
             }else{
-                res.status(422).send("Senhas distintas")
+                return res.status(422).send("Senhas distintas")
             }          
         }
         res.status(201).send("Created")

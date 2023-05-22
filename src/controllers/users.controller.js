@@ -40,7 +40,7 @@ export async function postUrl(req, res) {
         INSERT INTO urls ("shortUrl",url,"visitCount","userId") 
         VALUES ($1, $2, $3, $4);`, [shortUrl,url,visitCount,userId])
 
-        res.status(200).send("OK")
+        res.status(201).send("OK")
     } catch (err) {
         res.status(500).send(err.message)
     }
@@ -52,8 +52,12 @@ export async function getUrlById(req, res) {
         const url = await db.query(`SELECT * FROM urls WHERE id=$1;`,[id])
 
         if(!url.rows[0]) return res.status(404).send("Url encurtada não existe")
-        // console.table(urls.rows)
-        res.send(url.rows)
+        const sendObject = {
+            id: url.rows[0].id,
+            shortUrl: url.rows[0].shortUrl,
+            url: url.rows[0].url
+        }
+        res.send(sendObject)
     } catch (err) {
         res.status(500).send(err.message)
     }
