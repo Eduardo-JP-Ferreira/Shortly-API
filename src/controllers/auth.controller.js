@@ -1,5 +1,6 @@
 import { db } from "../database/connection.js"
 import { v4 as uuid } from 'uuid'
+import bcrypt from 'bcrypt';
 
 export async function getUsers(req, res) {
     try {
@@ -22,9 +23,11 @@ export async function signUp(req, res) {
         }
         else{
             if(password===confirmPassword){
+
+                const encryptedPassword = bcrypt.hashSync(password, 10);
                 const postUser = await db.query(`
                 INSERT INTO users (name,email,password) 
-                VALUES ($1, $2, $3);`, [name,email,password])
+                VALUES ($1, $2, $3);`, [name,email,encryptedPassword])
             }else{
                 return res.status(422).send("Senhas distintas")
             }          
@@ -44,7 +47,7 @@ export async function signIn(req, res) {
             return res.status(401).send("Email não Compatível")
         }
         else{   
-            if(password === user.rows[0].password){
+            if(bcrypt.compareSync(password, user.rows[0].password)){
                 const token = uuid()         
                 const objectLogin ={
                     token                    
