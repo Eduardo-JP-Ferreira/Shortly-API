@@ -141,3 +141,20 @@ export async function getMe(req, res) {
         res.status(500).send(err.message)
     }
 }
+
+export async function getRanking(req, res) {
+    try {
+        const rank = await db.query(`
+        SELECT users.id, users.name, COUNT(urls.id) AS "linksCounts", COALESCE(SUM(urls."visitCount"), 0) AS "totalVisitCount"
+        FROM users
+        LEFT JOIN urls ON users.id = urls."userId"
+        GROUP BY users.id, users.name
+        ORDER BY "totalVisitCount" DESC
+        LIMIT 10
+        ;`);   
+     
+        res.send(rank.rows)
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
