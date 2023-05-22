@@ -103,3 +103,41 @@ export async function deleteUrlById(req, res) {
         res.status(500).send(err.message)
     }
 }
+
+export async function getMe(req, res) {
+    const { authorization } = req.headers
+    const token = authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).send("Token Inexistente!")
+
+    const authToken = await db.query(`SELECT * FROM tokens WHERE token = $1;`,[token])
+    if (!authToken.rows[0]) return res.status(401).send("Token Inválido!")
+
+    try {      
+        const url = await db.query(`SELECT * FROM urls WHERE "userId"=$1;`,[authToken.rows[0].userId])
+        const user = await db.query(`SELECT * FROM users WHERE id=$1;`,[authToken.rows[0].userId])
+        if(!url.rows[0]) return res.status(404).send("url não existe")
+        let soma=0
+        const shortenedUrls = []
+        for(let i=0; i<url.rows.length;i++){
+            soma+= url.rows[i].visitCount
+            const object = {
+                id: url.rows[i].id,
+                shortUrl: url.rows[i].shortUrl,
+                url: url.rows[i].url,
+                visitCount: url.rows[i].visitCount
+            }
+            shortenedUrls.push(object)
+        }
+
+        const finalObject = {
+            id: authToken.rows[0].userId,
+            name: user.rows[0].name,
+            visitCount: soma,
+            shortenedUrls
+        }
+        
+        res.status(200).send(finalObject)
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
