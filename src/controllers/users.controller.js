@@ -39,7 +39,12 @@ export async function postUrl(req, res) {
         INSERT INTO urls ("shortUrl",url,"visitCount","userId") 
         VALUES ($1, $2, $3, $4);`, [shortUrl,url,visitCount,userId])
 
-        res.status(201).send("OK")
+        const urls = await db.query(`SELECT * FROM urls WHERE "shortUrl" = $1;`,[shortUrl])
+        const object = {
+            id: urls.rows[0].id,
+            shortUrl
+        }
+        res.status(201).send(object)
     } catch (err) {
         res.status(500).send(err.message)
     }
