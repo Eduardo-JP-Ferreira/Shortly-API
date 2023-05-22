@@ -27,7 +27,8 @@ SET default_table_access_method = heap;
 CREATE TABLE public.tokens (
     id integer NOT NULL,
     token text NOT NULL,
-    "userId" integer NOT NULL
+    "userId" integer NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -141,16 +142,16 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: tokens; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.tokens VALUES (1, '54ef2318-d1cc-4277-b29f-a3bcfff7ae25', 1);
-INSERT INTO public.tokens VALUES (5, '7a8dec07-5849-4b4c-ad42-3a60aff58577', 3);
-INSERT INTO public.tokens VALUES (7, '1bf45c45-9159-43e8-b7b1-524f16e18a25', 4);
-INSERT INTO public.tokens VALUES (8, '98ca8c30-f04f-48b6-aec3-a0c20a34566f', 2);
+INSERT INTO public.tokens VALUES (1, '405a8efa-a3fb-411f-9dda-cf66f80fc2f5', 2, '2023-05-22 03:11:40.170003');
 
 
 --
 -- Data for Name: urls; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public.urls VALUES (2, '8YdfNbXl', 'https://www.honda.com.br/motos/sites/hda/files/2022-12/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.webp', 3, 3);
+INSERT INTO public.urls VALUES (1, 'qs_eeJI_', 'https://www.honda.com.br/motos/sites/hda/files/2022-12/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.webp', 1, 3);
+INSERT INTO public.urls VALUES (3, 'JtrRAuR6', 'https://www.honda.com.br/motos/sites/hda/files/2022-12/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.webp', 0, 3);
 
 
 --
@@ -161,27 +162,30 @@ INSERT INTO public.users VALUES (1, 'jOAO', 'joao@drivensss.com.br', 'drivens');
 INSERT INTO public.users VALUES (2, 'MARIA', 'joao@drivenss.com.br', 'drivens');
 INSERT INTO public.users VALUES (3, 'MARIA', 'joao@driven.com.br', 'drivenS');
 INSERT INTO public.users VALUES (4, 'MARIAaa', 'joao@drivent.com.br', 'drivenS');
+INSERT INTO public.users VALUES (5, 'MARIAaa', 'joao@drivente.com.br', 'drivenS');
+INSERT INTO public.users VALUES (6, 'as', 'joao@driventef.com.br', 'drivenS');
+INSERT INTO public.users VALUES (7, 'jao', 'joao@driventeff.com.br', 'drivenS');
 
 
 --
 -- Name: tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.tokens_id_seq', 8, true);
+SELECT pg_catalog.setval('public.tokens_id_seq', 1, true);
 
 
 --
 -- Name: urls_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.urls_id_seq', 1, false);
+SELECT pg_catalog.setval('public.urls_id_seq', 3, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 4, true);
+SELECT pg_catalog.setval('public.users_id_seq', 7, true);
 
 
 --
@@ -206,14 +210,6 @@ ALTER TABLE ONLY public.tokens
 
 ALTER TABLE ONLY public.urls
     ADD CONSTRAINT urls_pkey PRIMARY KEY (id);
-
-
---
--- Name: urls urls_userId_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.urls
-    ADD CONSTRAINT "urls_userId_key" UNIQUE ("userId");
 
 
 --
