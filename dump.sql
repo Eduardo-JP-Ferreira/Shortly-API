@@ -61,7 +61,8 @@ CREATE TABLE public.urls (
     "shortUrl" text NOT NULL,
     url text NOT NULL,
     "visitCount" integer NOT NULL,
-    "userId" integer NOT NULL
+    "userId" integer NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -93,7 +94,8 @@ CREATE TABLE public.users (
     id integer NOT NULL,
     name text NOT NULL,
     email text NOT NULL,
-    password text NOT NULL
+    password text NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -143,35 +145,34 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 INSERT INTO public.tokens VALUES (1, '405a8efa-a3fb-411f-9dda-cf66f80fc2f5', 2, '2023-05-22 03:11:40.170003');
+INSERT INTO public.tokens VALUES (2, '3c5d9cb2-ee00-41ed-b614-36086f0a4c53', 8, '2023-05-22 03:29:29.09996');
+INSERT INTO public.tokens VALUES (3, '7ab01288-f7f0-45b9-90d1-3641daa87d58', 1, '2023-05-22 06:13:39.226435');
+INSERT INTO public.tokens VALUES (4, '5fe025be-946c-448e-b3b0-1670ff74167e', 3, '2023-05-22 06:13:58.888652');
 
 
 --
 -- Data for Name: urls; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.urls VALUES (2, '8YdfNbXl', 'https://www.honda.com.br/motos/sites/hda/files/2022-12/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.webp', 3, 3);
-INSERT INTO public.urls VALUES (1, 'qs_eeJI_', 'https://www.honda.com.br/motos/sites/hda/files/2022-12/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.webp', 1, 3);
-INSERT INTO public.urls VALUES (3, 'JtrRAuR6', 'https://www.honda.com.br/motos/sites/hda/files/2022-12/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.webp', 0, 3);
+INSERT INTO public.urls VALUES (3, 'mD7m07fG', 'https://www.honda.com.br/motos/sites/hda/files/2022-12/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.webp', 0, 3, '2023-05-22 06:15:32.690484');
+INSERT INTO public.urls VALUES (1, '85kJJh1t', 'https://www.honda.com.br/motos/sites/hda/files/2022-12/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.webp', 3, 1, '2023-05-22 06:15:03.741579');
+INSERT INTO public.urls VALUES (2, 'LLEH6vvR', 'https://www.honda.com.br/motos/sites/hda/files/2022-12/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.webp', 1, 1, '2023-05-22 06:15:05.652406');
 
 
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.users VALUES (1, 'jOAO', 'joao@drivensss.com.br', 'drivens');
-INSERT INTO public.users VALUES (2, 'MARIA', 'joao@drivenss.com.br', 'drivens');
-INSERT INTO public.users VALUES (3, 'MARIA', 'joao@driven.com.br', 'drivenS');
-INSERT INTO public.users VALUES (4, 'MARIAaa', 'joao@drivent.com.br', 'drivenS');
-INSERT INTO public.users VALUES (5, 'MARIAaa', 'joao@drivente.com.br', 'drivenS');
-INSERT INTO public.users VALUES (6, 'as', 'joao@driventef.com.br', 'drivenS');
-INSERT INTO public.users VALUES (7, 'jao', 'joao@driventeff.com.br', 'drivenS');
+INSERT INTO public.users VALUES (1, 'jao', 'eu@driven.com.br', '$2b$10$4xjhqZ3mxT5Cs5cePCaI/OHKoW0fM2A74XxbQWuzDTwE8anT6njDG', '2023-05-22 06:13:18.071318');
+INSERT INTO public.users VALUES (2, 'adasd', 'eu@driven1.com.br', '$2b$10$pyGR.gq5zJvvK/K9wliA1OheTwplGWDkIVuv.WRwgZ7OfTe6aZoPa', '2023-05-22 06:13:24.219564');
+INSERT INTO public.users VALUES (3, 'marquin', 'eu@driven12.com.br', '$2b$10$Jcho4P1s2uKozaWAGOusvOFI7v/aHu4LZGBK/whG/fvcvIQ5hifY2', '2023-05-22 06:13:31.249925');
 
 
 --
 -- Name: tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.tokens_id_seq', 1, true);
+SELECT pg_catalog.setval('public.tokens_id_seq', 4, true);
 
 
 --
@@ -185,7 +186,7 @@ SELECT pg_catalog.setval('public.urls_id_seq', 3, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 7, true);
+SELECT pg_catalog.setval('public.users_id_seq', 3, true);
 
 
 --
