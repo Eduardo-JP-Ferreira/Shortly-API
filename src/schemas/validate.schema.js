@@ -11,3 +11,7 @@ export const signInObject = joi.object({
     email: joi.string().email().required(),
     password: joi.string().required(),
   })
+
+export const urlObject = joi.object({
+    url: joi.string().required()
+  })
