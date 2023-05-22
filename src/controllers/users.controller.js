@@ -14,7 +14,6 @@ export async function getToken(req, res) {
 export async function getUrls(req, res) {
     try {
         const urls = await db.query(`SELECT * FROM urls;`)
-        // console.table(urls.rows)
         res.send(urls.rows)
     } catch (err) {
         res.status(500).send(err.message)
