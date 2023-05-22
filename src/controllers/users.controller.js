@@ -24,14 +24,13 @@ export async function getUrls(req, res) {
 export async function postUrl(req, res) {
     const { authorization } = req.headers
     const {url} = req.body
+    const token = authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).send("Token Inexistente!")
 
-    try {
-        const token = authorization?.replace("Bearer ", "")
-        if (!token) return res.status(401).send("Token Inexistente!")
+    const authToken = await db.query(`SELECT * FROM tokens WHERE token = $1;`,[token])
+    if (!authToken.rows[0]) return res.status(401).send("Token Inválido!")
 
-        const authToken = await db.query(`SELECT * FROM tokens WHERE token = $1;`,[token])
-        if (!authToken.rows[0]) return res.status(401).send("Token Inválido!")
-
+    try {      
         const shortUrl = nanoid(8)
         const visitCount = 0
         const userId = authToken.rows[0].userId
@@ -76,6 +75,30 @@ export async function redirectUrl(req, res) {
             WHERE id=$2;`, [newVisitCount, url.rows[0].id])
         // console.table(urls.rows)
         res.redirect(url.rows[0].url)
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
+
+export async function deleteUrlById(req, res) {
+    const { authorization } = req.headers
+    const {id} = req.params
+    const token = authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).send("Token Inexistente!")
+
+    const authToken = await db.query(`SELECT * FROM tokens WHERE token = $1;`,[token])
+    if (!authToken.rows[0]) return res.status(401).send("Token Inválido!")
+
+    try {      
+        const url = await db.query(`SELECT * FROM urls WHERE id=$1;`,[id])
+        if(!url.rows[0]) return res.status(404).send("url não existe")
+
+        if(authToken.rows[0].userId !== url.rows[0].userId){
+            return res.status(401).send("url não pertence ao usuário")
+        }
+        
+        const deleteUrl = await db.query(`DELETE FROM urls WHERE id = $1;`, [id])
+        res.sendStatus(204)
     } catch (err) {
         res.status(500).send(err.message)
     }
